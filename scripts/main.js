@@ -16,9 +16,8 @@ let warningTimeout;
   Global variable constants
 */
 
-//The day Costcodle was launched. Used to find game number each day
-const costcodleStartDate = new Date("09/21/2023");
-const gameNumber = getGameNumber();
+// Set after a random product is chosen from games.json
+let gameNumber;
 
 //Elements with event listeners to play the game
 const input = document.getElementById("guess-input");
@@ -26,6 +25,9 @@ const buttonInput = document.getElementById("guess-button");
 
 const infoButton = document.getElementById("info-button");
 infoButton.addEventListener("click", switchState);
+
+const shuffleButton = document.getElementById("shuffle-button");
+shuffleButton.addEventListener("click", () => location.reload());
 
 const statButton = document.getElementById("stat-button");
 statButton.addEventListener("click", switchState);
@@ -53,22 +55,25 @@ const gameState = JSON.parse(localStorage.getItem("state")) || {
 playGame();
 
 function playGame() {
-  fetchGameData(getGameNumber());
+  fetchGameData();
 }
 
 /*
   Acquiring Game Data
 */
 
-//Fetches the current day's game data from the json and starts game
-function fetchGameData(gameNumber) {
+//Fetches games.json, picks a random product, and starts the game
+function fetchGameData() {
   fetch("./games.json")
     .then((response) => response.json())
     .then((json) => {
-      productName = json[`game-${gameNumber}`].name;
-      productPrice = json[`game-${gameNumber}`].price;
+      const keys = Object.keys(json);
+      const key = keys[Math.floor(Math.random() * keys.length)];
+      gameNumber = Number(key.replace("game-", ""));
+      productName = json[key].name;
+      productPrice = json[key].price;
       productPrice = Number(productPrice.slice(1, productPrice.length));
-      productImage = json[`game-${gameNumber}`].image;
+      productImage = json[key].image;
 
       initializeGame();
     });
@@ -499,17 +504,5 @@ function shakeBox() {
     () => infoCard.classList.add("animate__headShake"),
     100
   );
-}
-
-/*
-  Finds current game number based off of Costcodle start date
-*/
-
-function getGameNumber() {
-  const currDate = new Date();
-  let timeDifference = currDate.getTime() - costcodleStartDate.getTime();
-  let dayDifference = timeDifference / (1000 * 3600 * 24);
-
-  return Math.ceil(dayDifference) + 1;
 }
 

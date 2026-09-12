@@ -78,18 +78,29 @@
     <div id="main-page">
       <header id="site-header">
         <div id="header-container">
-          <button id="info-button" data-overlay="info-overlay" type="button">
-            ?
-          </button>
+          <div id="header-left">
+            <button id="info-button" data-overlay="info-overlay" type="button">
+              ?
+            </button>
+            <button
+              id="shuffle-button"
+              type="button"
+              aria-label="New random product"
+            >
+              ↻
+            </button>
+          </div>
           <h1 id="title" class="title costco-red">
             <center>COSTCO<span class="costco-blue">DLE</span></center>
           </h1>
-          <button id="stat-button" data-overlay="stats-overlay" type="button">
-            <img
-              src="./assets/stat-logo.svg"
-              style="height: 100%; width: 100%"
-            />
-          </button>
+          <div id="header-right">
+            <button id="stat-button" data-overlay="stats-overlay" type="button">
+              <img
+                src="./assets/stat-logo.svg"
+                style="height: 100%; width: 100%"
+              />
+            </button>
+          </div>
         </div>
       </header>
 
